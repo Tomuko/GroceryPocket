@@ -10,46 +10,63 @@ import SwiftUI
 struct ProductListView: View {
     @State private var products: [String] = ["Яблоко", "Банан", "Апельсин", "Груша", "Виноград"]
     @State private var newProduct: String = ""
+    @State private var isAddingProduct = false
     
     var body: some View {
         NavigationView {
             VStack {
-                TextField("Введите продукт", text: $newProduct)
-                    .padding()
-                
-                Button(action: {
-                    if !newProduct.isEmpty {
-                        products.append(newProduct)
-                        newProduct = ""
-                    }
-                }) {
-                    Text("Добавить продукт")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                }
-                .padding(.bottom)
-                
                 List {
                     ForEach(products, id: \.self) { product in
                         Text(product)
-                            .swipeActions {
-                                Button(action: {
-                                    if let index = products.firstIndex(of: product) {
-                                        products.remove(at: index)
-                                    }
-                                }) {
-                                    Text("Удалить")
-                                        .foregroundColor(.white)
-                                }
-                                .background(Color.red)
-                            }
                     }
+                    .onDelete(perform: deleteProduct)
                 }
+                .padding(.vertical)
             }
             .navigationBarTitle("Список продуктов")
+            .navigationBarItems(trailing: addButton)
         }
+        .sheet(isPresented: $isAddingProduct) {
+            addProductSheet
+        }
+    }
+    
+    private var addButton: some View {
+        Button(action: {
+            isAddingProduct = true
+        }) {
+            Image(systemName: "plus")
+                .foregroundColor(.blue)
+                .font(.title)
+        }
+    }
+    
+    private var addProductSheet: some View {
+        VStack {
+            Text("Добавьте продукт")
+                .font(.headline)
+            TextField("Введите продукт", text: $newProduct)
+                .padding()
+            Button("Добавить", action: addNewProduct)
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(10)
+                .padding(.top)
+        }
+        .padding()
+    }
+    
+    private func addNewProduct() {
+        if !newProduct.isEmpty {
+            products.append(newProduct)
+            newProduct = ""
+            isAddingProduct = false
+        }
+    }
+    
+    private func deleteProduct(at offsets: IndexSet) {
+        products.remove(atOffsets: offsets)
     }
 }
 
