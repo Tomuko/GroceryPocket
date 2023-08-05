@@ -7,20 +7,55 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct ProductListView: View {
+    @State private var products: [String] = ["Яблоко", "Банан", "Апельсин", "Груша", "Виноград"]
+    @State private var newProduct: String = ""
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            VStack {
+                TextField("Введите продукт", text: $newProduct)
+                    .padding()
+                
+                Button(action: {
+                    if !newProduct.isEmpty {
+                        products.append(newProduct)
+                        newProduct = ""
+                    }
+                }) {
+                    Text("Добавить продукт")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
+                .padding(.bottom)
+                
+                List {
+                    ForEach(products, id: \.self) { product in
+                        Text(product)
+                            .swipeActions {
+                                Button(action: {
+                                    if let index = products.firstIndex(of: product) {
+                                        products.remove(at: index)
+                                    }
+                                }) {
+                                    Text("Удалить")
+                                        .foregroundColor(.white)
+                                }
+                                .background(Color.red)
+                            }
+                    }
+                }
+            }
+            .navigationBarTitle("Список продуктов")
         }
-        .padding()
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct ProductListView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ProductListView()
     }
 }
+
