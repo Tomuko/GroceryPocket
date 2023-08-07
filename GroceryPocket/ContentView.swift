@@ -16,7 +16,7 @@ struct ProductListView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.green
+                Color.init("lightGreen")
                     .ignoresSafeArea()
                 VStack {
                     productsList
@@ -36,32 +36,32 @@ struct ProductListView: View {
             isAddingProduct = true
         }) {
             Image(systemName: "plus")
-                .foregroundColor(.blue)
+                .foregroundColor(Color.init("lightYellow"))
                 .font(.title)
         }
     }
     
     private var addProductSheet: some View {
         ZStack {
-            Color.yellow
+            Color.init("lightYellow")
                 .ignoresSafeArea()
             VStack {
                 Text("Enter a product")
                     .font(.headline)
                 TextField("Enter a product", text: $newProduct)
                     .padding()
-                    .background(Color.green)
+                    .background(Color.init("lightGreen"))
                     .cornerRadius(10)
                     .padding(.top)
                 TextField("Amount", text: $newAmount)
                     .padding()
-                    .background(Color.green)
+                    .background(Color.init("lightGreen"))
                     .cornerRadius(10)
                     .padding(.top)
                 Button("Add product", action: addNewProduct)
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .padding()
-                    .background(Color.green)
+                    .background(Color.init("lightGreen"))
                     .cornerRadius(10)
                     .padding(.top)
             }
@@ -105,3 +105,6 @@ struct ProductListView_Previews: PreviewProvider {
         ProductListView()
     }
 }
+
+
+// добавить избранное, часто покупали, картинки с продуктом, возможно вам будет интересно
