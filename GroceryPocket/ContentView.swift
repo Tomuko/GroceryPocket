@@ -8,26 +8,26 @@
 import SwiftUI
 
 struct ProductListView: View {
-    @State private var products: [String] = ["Яблоко", "Банан", "Апельсин", "Груша", "Виноград"]
     @State private var newProduct: String = ""
+    @State private var newAmount: String = ""
+    @State private var productAmounts: [String: String] = ["Apple": "5", "Banana": "2", "Orange": "6", "Pear": "3", "Grape": "9"]
     @State private var isAddingProduct = false
     
     var body: some View {
         NavigationView {
-            VStack {
-                List {
-                    ForEach(products, id: \.self) { product in
-                        Text(product)
-                    }
-                    .onDelete(perform: deleteProduct)
+            ZStack {
+                Color.green
+                    .ignoresSafeArea()
+                VStack {
+                    productsList
+                        .padding(.vertical)
                 }
-                .padding(.vertical)
+                .navigationBarTitle("Grocery list 🍋")
+                .navigationBarItems(trailing: addButton)
             }
-            .navigationBarTitle("Список продуктов")
-            .navigationBarItems(trailing: addButton)
-        }
-        .sheet(isPresented: $isAddingProduct) {
-            addProductSheet
+            .sheet(isPresented: $isAddingProduct) {
+                addProductSheet
+            }
         }
     }
     
@@ -42,31 +42,61 @@ struct ProductListView: View {
     }
     
     private var addProductSheet: some View {
-        VStack {
-            Text("Добавьте продукт")
-                .font(.headline)
-            TextField("Введите продукт", text: $newProduct)
-                .padding()
-            Button("Добавить", action: addNewProduct)
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.blue)
-                .cornerRadius(10)
-                .padding(.top)
+        ZStack {
+            Color.yellow
+                .ignoresSafeArea()
+            VStack {
+                Text("Enter a product")
+                    .font(.headline)
+                TextField("Enter a product", text: $newProduct)
+                    .padding()
+                    .background(Color.green)
+                    .cornerRadius(10)
+                    .padding(.top)
+                TextField("Amount", text: $newAmount)
+                    .padding()
+                    .background(Color.green)
+                    .cornerRadius(10)
+                    .padding(.top)
+                Button("Add product", action: addNewProduct)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.green)
+                    .cornerRadius(10)
+                    .padding(.top)
+            }
+            .padding()
         }
-        .padding()
+    }
+    
+    private var productsList: some View {
+        List {
+            ForEach(productAmounts.keys.sorted(), id: \.self) { product in
+                HStack {
+                    Text(product)
+                    Spacer()
+                    Text(productAmounts[product] ?? "")
+                        .foregroundColor(.gray)
+                }
+            }
+            .onDelete(perform: deleteProduct)
+        }
     }
     
     private func addNewProduct() {
         if !newProduct.isEmpty {
-            products.append(newProduct)
+            productAmounts[newProduct] = newAmount
             newProduct = ""
+            newAmount = ""
             isAddingProduct = false
         }
     }
     
     private func deleteProduct(at offsets: IndexSet) {
-        products.remove(atOffsets: offsets)
+        for index in offsets {
+            let product = Array(productAmounts.keys.sorted())[index]
+            productAmounts[product] = nil
+        }
     }
 }
 
@@ -75,4 +105,3 @@ struct ProductListView_Previews: PreviewProvider {
         ProductListView()
     }
 }
-

@@ -11,6 +11,7 @@
 		54F50DFE2A7E7714000B277A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F50DFD2A7E7714000B277A /* ContentView.swift */; };
 		54F50E002A7E7715000B277A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F50DFF2A7E7715000B277A /* Assets.xcassets */; };
 		54F50E032A7E7715000B277A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F50E022A7E7715000B277A /* Preview Assets.xcassets */; };
+		54F50E0A2A7F9AE0000B277A /* LSGroceryPocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F50E092A7F9AE0000B277A /* LSGroceryPocket.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		54F50DFD2A7E7714000B277A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		54F50DFF2A7E7715000B277A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54F50E022A7E7715000B277A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		54F50E092A7F9AE0000B277A /* LSGroceryPocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSGroceryPocket.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				54F50DFB2A7E7714000B277A /* GroceryPocketApp.swift */,
 				54F50DFD2A7E7714000B277A /* ContentView.swift */,
+				54F50E092A7F9AE0000B277A /* LSGroceryPocket.swift */,
 				54F50DFF2A7E7715000B277A /* Assets.xcassets */,
 				54F50E012A7E7715000B277A /* Preview Content */,
 			);
@@ -139,6 +142,7 @@
 			files = (
 				54F50DFE2A7E7714000B277A /* ContentView.swift in Sources */,
 				54F50DFC2A7E7714000B277A /* GroceryPocketApp.swift in Sources */,
+				54F50E0A2A7F9AE0000B277A /* LSGroceryPocket.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
