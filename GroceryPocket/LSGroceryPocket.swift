@@ -19,8 +19,8 @@ struct LSGroceryPocket: View {
             
             VStack {
                 Text("🍋")
-                    .font(.system(size: 60)) // Увеличиваем размер эмодзи лимона
-                    .padding(.bottom, 10) // Поднимаем эмодзи лимона чуть повыше
+                    .font(.system(size: 60))
+                    .padding(.bottom, 10)
                 Text("Grocery Pocket")
                 
             }
