@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  ProductListView.swift
 //  GroceryPocket
 //
 //  Created by Виктория Страдзина on 05.08.2023.
@@ -19,6 +19,7 @@ struct ProductListView: View {
     @State private var productAmounts: [String: String] = ["Apple": "5", "Banana": "2", "Orange": "6", "Pear": "3", "Grape": "9"]
     @State private var isAddingProduct = false
     @State private var selectedColorScheme = AppColorScheme.lightGreen
+    @State private var isShowingSettings = false
     
     var body: some View {
         NavigationView {
@@ -30,11 +31,17 @@ struct ProductListView: View {
                         .padding(.vertical)
                 }
                 .navigationBarTitle("Grocery list 🍋")
-                .navigationBarItems(leading: colorSchemeButton, trailing: addButton)
+                .navigationBarItems(leading: settingsButton, trailing: addButton)
             }
-            .sheet(isPresented: $isAddingProduct) {
-                addProductSheet
+            .fullScreenCover(isPresented: $isShowingSettings) {
+                SettingsView(selectedColorScheme: $selectedColorScheme)
+                    .navigationBarItems(leading: Button("Done") {
+                        isShowingSettings = false
+                    })
             }
+        }
+        .sheet(isPresented: $isAddingProduct) {
+            addProductSheet
         }
     }
     
@@ -57,18 +64,18 @@ struct ProductListView: View {
                     .font(.headline)
                 TextField("Enter a product", text: $newProduct)
                     .padding()
-                    .background(textFieldColor) // Используем textFieldColor
+                    .background(textFieldColor)
                     .cornerRadius(10)
                     .padding(.top)
                 TextField("Amount", text: $newAmount)
                     .padding()
-                    .background(textFieldColor) // Используем textFieldColor
+                    .background(textFieldColor)
                     .cornerRadius(10)
                     .padding(.top)
                 Button("Add product", action: addNewProduct)
                     .foregroundColor(.black)
                     .padding()
-                    .background(textFieldColor) // Используем textFieldColor
+                    .background(textFieldColor)
                     .cornerRadius(10)
                     .padding(.top)
             }
@@ -106,17 +113,11 @@ struct ProductListView: View {
         }
     }
     
-    private var colorSchemeButton: some View {
-        Menu {
-            ForEach(AppColorScheme.allCases, id: \.self) { scheme in
-                Button(action: {
-                    selectedColorScheme = scheme
-                }) {
-                    Text(scheme.rawValue)
-                }
-            }
-        } label: {
-            Image(systemName: "paintbrush.fill")
+    private var settingsButton: some View {
+        Button(action: {
+            isShowingSettings = true
+        }) {
+            Image(systemName: "gearshape.fill")
                 .foregroundColor(Color.init("lightYellow"))
                 .font(.title)
         }
@@ -150,6 +151,11 @@ struct ProductListView_Previews: PreviewProvider {
         ProductListView()
     }
 }
+
+
+
+
+
 
 
 
