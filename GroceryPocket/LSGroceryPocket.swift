@@ -14,20 +14,28 @@ struct LSGroceryPocket: View {
     @State private var opacity = 0.5
     
     var body: some View {
-        VStack {
+        ZStack {
+            Color.init("lightGreen")
+            
             VStack {
+                Text("🍋")
+                    .font(.system(size: 60)) // Увеличиваем размер эмодзи лимона
+                    .padding(.bottom, 10) // Поднимаем эмодзи лимона чуть повыше
                 Text("Grocery Pocket")
-               
+                
             }
+            .font(.custom("Helvetica Neue", size: 24))
+            .foregroundColor(.black)
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }
-    
-
 
 struct LSGroceryPocket_Previews: PreviewProvider {
     static var previews: some View {
         LSGroceryPocket()
     }
 }
+
+
     

@@ -15,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5465042E2A85034F00E3DB92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		54F50DF82A7E7714000B277A /* GroceryPocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroceryPocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F50DFB2A7E7714000B277A /* GroceryPocketApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryPocketApp.swift; sourceTree = "<group>"; };
 		54F50DFD2A7E7714000B277A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,6 +54,7 @@
 		54F50DFA2A7E7714000B277A /* GroceryPocket */ = {
 			isa = PBXGroup;
 			children = (
+				5465042E2A85034F00E3DB92 /* Info.plist */,
 				54F50DFB2A7E7714000B277A /* GroceryPocketApp.swift */,
 				54F50DFD2A7E7714000B277A /* ContentView.swift */,
 				54F50E092A7F9AE0000B277A /* LSGroceryPocket.swift */,
@@ -274,6 +276,7 @@
 				DEVELOPMENT_TEAM = F8CXZAAT6B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GroceryPocket/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -303,6 +306,7 @@
 				DEVELOPMENT_TEAM = F8CXZAAT6B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GroceryPocket/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
