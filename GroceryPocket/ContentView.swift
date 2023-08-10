@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum AppColorScheme: String, CaseIterable {
-    case lightGreen = "Light Green"
-    case darkBlue = "Dark Blue"
-    case lightPink = "Light Pink"
+    case lightGreen = "Green"
+    case lightBlue = "Blue"
+    case lightPink = "Pink"
 }
 
 struct ProductListView: View {
@@ -18,7 +18,7 @@ struct ProductListView: View {
     @State private var newAmount: String = ""
     @State private var productAmounts: [String: String] = ["Apple": "5", "Banana": "2", "Orange": "6", "Pear": "3", "Grape": "9"]
     @State private var isAddingProduct = false
-    @State private var selectedColorScheme = AppColorScheme.lightGreen // Default color scheme
+    @State private var selectedColorScheme = AppColorScheme.lightGreen
     
     var body: some View {
         NavigationView {
@@ -57,18 +57,18 @@ struct ProductListView: View {
                     .font(.headline)
                 TextField("Enter a product", text: $newProduct)
                     .padding()
-                    .background(Color.init("lightGreen"))
+                    .background(textFieldColor) // Используем textFieldColor
                     .cornerRadius(10)
                     .padding(.top)
                 TextField("Amount", text: $newAmount)
                     .padding()
-                    .background(Color.init("lightGreen"))
+                    .background(textFieldColor) // Используем textFieldColor
                     .cornerRadius(10)
                     .padding(.top)
                 Button("Add product", action: addNewProduct)
                     .foregroundColor(.black)
                     .padding()
-                    .background(Color.init("lightGreen"))
+                    .background(textFieldColor) // Используем textFieldColor
                     .cornerRadius(10)
                     .padding(.top)
             }
@@ -122,12 +122,23 @@ struct ProductListView: View {
         }
     }
     
+    private var textFieldColor: Color {
+        switch selectedColorScheme {
+        case .lightGreen:
+            return Color.init("lightGreen")
+        case .lightBlue:
+            return Color.init("lightBlue")
+        case .lightPink:
+            return Color.init("lightPink")
+        }
+    }
+    
     private var colorSchemeBackground: some View {
         switch selectedColorScheme {
         case .lightGreen:
             return Color.init("lightGreen")
-        case .darkBlue:
-            return Color.init("darkBlue")
+        case .lightBlue:
+            return Color.init("lightBlue")
         case .lightPink:
             return Color.init("lightPink")
         }
@@ -139,6 +150,7 @@ struct ProductListView_Previews: PreviewProvider {
         ProductListView()
     }
 }
+
 
 
 
