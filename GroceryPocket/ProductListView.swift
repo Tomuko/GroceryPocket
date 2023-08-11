@@ -20,7 +20,7 @@ struct ProductListView: View {
     @State private var isAddingProduct = false
     @State private var selectedColorScheme = AppColorScheme.lightGreen
     @State private var isShowingSettings = false
-    
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -44,7 +44,7 @@ struct ProductListView: View {
             addProductSheet
         }
     }
-    
+
     private var addButton: some View {
         Button(action: {
             isAddingProduct = true
@@ -54,7 +54,7 @@ struct ProductListView: View {
                 .font(.title)
         }
     }
-    
+
     private var addProductSheet: some View {
         ZStack {
             Color.init("lightYellow")
