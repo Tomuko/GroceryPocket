@@ -20,7 +20,7 @@ struct ProductListView: View {
     @State private var isAddingProduct = false
     @State private var selectedColorScheme = AppColorScheme.lightGreen
     @State private var isShowingSettings = false
-
+    @State private var favoriteProducts: Set<String> = []
     var body: some View {
         NavigationView {
             ZStack {
@@ -31,20 +31,30 @@ struct ProductListView: View {
                         .padding(.vertical)
                 }
                 .navigationBarTitle("Grocery list 🍋")
-                .navigationBarItems(leading: settingsButton, trailing: addButton)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        addButton
+                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        settingsButton
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Spacer()
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        favoritesButton
+                    }
+                }
             }
             .fullScreenCover(isPresented: $isShowingSettings) {
                 SettingsView(selectedColorScheme: $selectedColorScheme)
-                    .navigationBarItems(leading: Button("Done") {
-                        isShowingSettings = false
-                    })
             }
         }
         .sheet(isPresented: $isAddingProduct) {
             addProductSheet
         }
     }
-
+    
     private var addButton: some View {
         Button(action: {
             isAddingProduct = true
@@ -54,7 +64,15 @@ struct ProductListView: View {
                 .font(.title)
         }
     }
-
+    
+    private var favoritesButton: some View {
+        NavigationLink(destination: FavoritesView(productAmounts: $productAmounts, favoriteProducts: $favoriteProducts, selectedColorScheme: $selectedColorScheme)) {
+            Image(systemName: "heart.fill")
+                .foregroundColor(Color.init("lightYellow"))
+                .font(.headline)
+        }
+    }
+    
     private var addProductSheet: some View {
         ZStack {
             Color.init("lightYellow")
@@ -92,6 +110,13 @@ struct ProductListView: View {
                     Text(productAmounts[product] ?? "")
                         .foregroundColor(.gray)
                 }
+                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                    Button(action: {
+                        moveToFavorites(product)
+                    }) {
+                        Label("Favorite", systemImage: favoriteProducts.contains(product) ? "heart.fill" : "heart")
+                    }
+                }
             }
             .onDelete(perform: deleteProduct)
         }
@@ -106,10 +131,17 @@ struct ProductListView: View {
         }
     }
     
+    private func moveToFavorites(_ product: String) {
+        if productAmounts[product] != nil {
+            favoriteProducts.insert(product)
+            productAmounts[product] = nil
+        }
+    }
+    
     private func deleteProduct(at offsets: IndexSet) {
         for index in offsets {
-            let product = Array(productAmounts.keys.sorted())[index]
-            productAmounts[product] = nil
+            let product = Array(favoriteProducts.sorted())[index]
+            favoriteProducts.remove(product)
         }
     }
     
@@ -151,13 +183,5 @@ struct ProductListView_Previews: PreviewProvider {
         ProductListView()
     }
 }
-
-
-
-
-
-
-
-
 
 // добавить избранное, часто покупали, картинки с продуктом, возможно вам будет интересно

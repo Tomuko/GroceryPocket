@@ -9,30 +9,36 @@ import SwiftUI
 
 struct FavoritesView: View {
     @Binding var productAmounts: [String: String]
-    @State private var favoriteProducts: Set<String> = []
+    @Binding var favoriteProducts: Set<String>
+    @Binding var selectedColorScheme: AppColorScheme
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(productAmounts.keys.sorted(), id: \.self) { product in
-                    HStack {
-                        Text(product)
-                        Spacer()
-                        Text(productAmounts[product] ?? "")
-                            .foregroundColor(.gray)
-                        
-                        Button(action: {
-                            toggleFavorite(product)
-                        }) {
-                            Image(systemName: favoriteProducts.contains(product) ? "heart.fill" : "heart")
-                                .foregroundColor(favoriteProducts.contains(product) ? .red : .gray)
+            ZStack {
+                colorSchemeBackground
+                    .ignoresSafeArea()
+                VStack {
+                    List {
+                        ForEach(Array(favoriteProducts).sorted(), id: \.self) { product in
+                            HStack {
+                                Text(product)
+                                Spacer()
+                                Text(productAmounts[product] ?? "")
+                                    .foregroundColor(.gray)
+                                Button(action: {
+                                    toggleFavorite(product)
+                                }) {
+                                    Image(systemName: "heart.fill")
+                                        .foregroundColor(.red)
+                                }
+                            }
+                            .background(Color.yellow.opacity(0.2))
                         }
+                        .onDelete(perform: deleteProduct)
                     }
-                    .background(favoriteProducts.contains(product) ? Color.yellow.opacity(0.2) : Color.clear)
                 }
-                .onDelete(perform: deleteProduct)
+                .navigationBarTitle("Favorites")
             }
-            .navigationBarTitle("Favorites")
         }
     }
     
@@ -46,15 +52,39 @@ struct FavoritesView: View {
     
     private func deleteProduct(at offsets: IndexSet) {
         for index in offsets {
-            let product = Array(productAmounts.keys.sorted())[index]
-            productAmounts[product] = nil
+            let product = Array(favoriteProducts.sorted())[index]
             favoriteProducts.remove(product)
+        }
+    }
+    
+    private var colorSchemeBackground: some View {
+        switch selectedColorScheme {
+        case .lightGreen:
+            return Color.init("lightGreen")
+        case .lightBlue:
+            return Color.init("lightBlue")
+        case .lightPink:
+            return Color.init("lightPink")
         }
     }
 }
 
 struct FavoritesView_Previews: PreviewProvider {
     static var previews: some View {
-        FavoritesView(productAmounts: .constant(["Apple": "5", "Banana": "2", "Orange": "6"]))
+        let initialFavoriteProducts: Set<String> = ["Strawberry", "Chocolate", "Blueberry"]
+        
+        return FavoritesView(productAmounts: .constant(["Apple": "5", "Banana": "2", "Orange": "6"]),
+                             favoriteProducts: .constant(initialFavoriteProducts),
+                             selectedColorScheme: .constant(.lightGreen))
     }
 }
+
+//Проработать логику приложения, возможно добавить отдельное окно для ввода продуктов в фавориты
+
+
+
+
+
+
+
+
