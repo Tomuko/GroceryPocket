@@ -11,6 +11,8 @@ struct FavoritesView: View {
     @Binding var productAmounts: [String: String]
     @Binding var favoriteProducts: Set<String>
     @Binding var selectedColorScheme: AppColorScheme
+    @State private var isAddingFavorite = false
+    @State private var newFavorite: String = ""
     
     var body: some View {
         NavigationView {
@@ -34,11 +36,51 @@ struct FavoritesView: View {
                             }
                             .background(Color.yellow.opacity(0.2))
                         }
-                        .onDelete(perform: deleteProduct)
+                        .onDelete(perform: deleteProduct(at:))
+                    }
+                    .navigationBarTitle("Favorites")
+                    .toolbar {
+                        ToolbarItemGroup(placement: .navigationBarTrailing) {
+                            addButton
+                        }
                     }
                 }
-                .navigationBarTitle("Favorites")
             }
+        }
+        .sheet(isPresented: $isAddingFavorite) {
+            addFavoriteSheet
+        }
+    }
+    
+    private var addButton: some View {
+        Button(action: {
+            isAddingFavorite = true
+        }) {
+            Image(systemName: "plus")
+                .foregroundColor(.red)
+        }
+    }
+    
+    private var addFavoriteSheet: some View {
+        ZStack {
+            colorSchemeBackground
+                .ignoresSafeArea()
+            VStack {
+                Text("Add Favorite Product")
+                    .font(.headline)
+                TextField("Enter a product", text: $newFavorite)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .padding(.top)
+                Button("Add", action: addFavorite)
+                    .foregroundColor(.black)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .padding(.top)
+            }
+            .padding()
         }
     }
     
@@ -57,15 +99,21 @@ struct FavoritesView: View {
         }
     }
     
-    private var colorSchemeBackground: some View {
-        switch selectedColorScheme {
-        case .lightGreen:
-            return Color.init("lightGreen")
-        case .lightBlue:
-            return Color.init("lightBlue")
-        case .lightPink:
-            return Color.init("lightPink")
+    private func addFavorite() {
+        if !newFavorite.isEmpty {
+            favoriteProducts.insert(newFavorite)
+            newFavorite = ""
+            isAddingFavorite = false
         }
+    }
+    
+    private var colorSchemeBackground: Color {
+        let colorMap: [AppColorScheme: Color] = [
+            .lightGreen: Color("lightGreen"),
+            .lightBlue: Color("lightBlue"),
+            .lightPink: Color("lightPink")
+        ]
+        return colorMap[selectedColorScheme] ?? Color.clear
     }
 }
 
@@ -78,6 +126,7 @@ struct FavoritesView_Previews: PreviewProvider {
                              selectedColorScheme: .constant(.lightGreen))
     }
 }
+
 
 //Проработать логику приложения, возможно добавить отдельное окно для ввода продуктов в фавориты
 
