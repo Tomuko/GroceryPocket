@@ -51,7 +51,7 @@ struct FavoritesView: View {
             addFavoriteSheet
         }
     }
-    
+
     private var addButton: some View {
         Button(action: {
             isAddingFavorite = true
@@ -60,7 +60,7 @@ struct FavoritesView: View {
                 .foregroundColor(.red)
         }
     }
-    
+
     private var addFavoriteSheet: some View {
         ZStack {
             colorSchemeBackground
@@ -83,7 +83,7 @@ struct FavoritesView: View {
             .padding()
         }
     }
-    
+
     private func toggleFavorite(_ product: String) {
         if favoriteProducts.contains(product) {
             favoriteProducts.remove(product)
@@ -91,14 +91,14 @@ struct FavoritesView: View {
             favoriteProducts.insert(product)
         }
     }
-    
+
     private func deleteProduct(at offsets: IndexSet) {
         for index in offsets {
             let product = Array(favoriteProducts.sorted())[index]
             favoriteProducts.remove(product)
         }
     }
-    
+
     private func addFavorite() {
         if !newFavorite.isEmpty {
             favoriteProducts.insert(newFavorite)
@@ -106,7 +106,7 @@ struct FavoritesView: View {
             isAddingFavorite = false
         }
     }
-    
+
     private var colorSchemeBackground: Color {
         let colorMap: [AppColorScheme: Color] = [
             .lightGreen: Color("lightGreen"),

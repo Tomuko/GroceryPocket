@@ -18,41 +18,43 @@ struct ProductListView: View {
     @State private var newAmount: String = ""
     @State private var productAmounts: [String: String] = ["Apple": "5", "Banana": "2", "Orange": "6", "Pear": "3", "Grape": "9"]
     @State private var isAddingProduct = false
-    @State private var selectedColorScheme = AppColorScheme.lightGreen
     @State private var isShowingSettings = false
+    @State private var selectedColorScheme = AppColorScheme.lightGreen
     @State private var favoriteProducts: Set<String> = []
+    
     var body: some View {
         NavigationView {
             ZStack {
                 colorSchemeBackground
                     .ignoresSafeArea()
                 VStack {
+                    Spacer()
                     productsList
                         .padding(.vertical)
                 }
                 .navigationBarTitle("Grocery list 🍋")
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        addButton
-                    }
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        settingsButton
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Spacer()
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        favoritesButton
-                    }
                 }
-            }
-            .fullScreenCover(isPresented: $isShowingSettings) {
-                SettingsView(selectedColorScheme: $selectedColorScheme)
+                .sheet(isPresented: $isAddingProduct) {
+                    addProductSheet
+                }
+                buttonsStack
             }
         }
-        .sheet(isPresented: $isAddingProduct) {
-            addProductSheet
+    }
+    
+    private var buttonsStack: some View {
+        HStack {
+            Spacer()
+            addButton
+            Spacer()
+            favoritesButton
+            Spacer()
+            settingsButton
+            Spacer()
         }
+        .padding()
+        .background(Color.white)
     }
     
     private var addButton: some View {
@@ -60,7 +62,7 @@ struct ProductListView: View {
             isAddingProduct = true
         }) {
             Image(systemName: "plus")
-                .foregroundColor(Color.init("lightYellow"))
+                .foregroundColor(textFieldColor)
                 .font(.title)
         }
     }
@@ -68,7 +70,7 @@ struct ProductListView: View {
     private var favoritesButton: some View {
         NavigationLink(destination: FavoritesView(productAmounts: $productAmounts, favoriteProducts: $favoriteProducts, selectedColorScheme: $selectedColorScheme)) {
             Image(systemName: "heart.fill")
-                .foregroundColor(Color.init("lightYellow"))
+                .foregroundColor(textFieldColor)
                 .font(.headline)
         }
     }
@@ -110,13 +112,6 @@ struct ProductListView: View {
                     Text(productAmounts[product] ?? "")
                         .foregroundColor(.gray)
                 }
-                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                    Button(action: {
-                        moveToFavorites(product)
-                    }) {
-                        Label("Favorite", systemImage: favoriteProducts.contains(product) ? "heart.fill" : "heart")
-                    }
-                }
             }
             .onDelete(perform: deleteProduct)
         }
@@ -140,7 +135,8 @@ struct ProductListView: View {
     
     private func deleteProduct(at offsets: IndexSet) {
         for index in offsets {
-            let product = Array(favoriteProducts.sorted())[index]
+            let product = Array(productAmounts.keys.sorted())[index]
+            productAmounts[product] = nil
             favoriteProducts.remove(product)
         }
     }
@@ -152,6 +148,9 @@ struct ProductListView: View {
             Image(systemName: "gearshape.fill")
                 .foregroundColor(Color.init("lightYellow"))
                 .font(.title)
+        }
+        .sheet(isPresented: $isShowingSettings) {
+            SettingsView(selectedColorScheme: $selectedColorScheme)
         }
     }
     
@@ -183,5 +182,6 @@ struct ProductListView_Previews: PreviewProvider {
         ProductListView()
     }
 }
+
 
 // добавить избранное, часто покупали, картинки с продуктом, возможно вам будет интересно
