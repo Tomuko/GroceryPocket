@@ -19,52 +19,61 @@ struct FavoritesView: View {
             ZStack {
                 colorSchemeBackground
                     .ignoresSafeArea()
+                
                 VStack {
-                    List {
-                        ForEach(Array(favoriteProducts).sorted(), id: \.self) { product in
-                            HStack {
-                                Text(product)
-                                Spacer()
-                                Text(productAmounts[product] ?? "")
-                                    .foregroundColor(.gray)
-                                Button(action: {
-                                    toggleFavorite(product)
-                                }) {
-                                    Image(systemName: "heart.fill")
-                                        .foregroundColor(.red)
-                                }
-                            }
-                            .background(Color.yellow.opacity(0.2))
-                        }
-                        .onDelete(perform: deleteProduct(at:))
+                    Spacer()
+                    favoritesList
+                        .padding(.vertical)
+                }
+                .navigationBarTitle("Favorites")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        addButton
                     }
-                    .navigationBarTitle("Favorites")
-                    .toolbar {
-                        ToolbarItemGroup(placement: .navigationBarTrailing) {
-                            addButton
-                        }
-                    }
+                }
+                .sheet(isPresented: $isAddingFavorite) {
+                    addFavoriteSheet
                 }
             }
         }
-        .sheet(isPresented: $isAddingFavorite) {
-            addFavoriteSheet
+    }
+    
+    private var favoritesList: some View {
+        List {
+            ForEach(Array(favoriteProducts).sorted(), id: \.self) { product in
+                HStack {
+                    Text(product)
+                    Spacer()
+                    Text(productAmounts[product] ?? "")
+                        .foregroundColor(.gray)
+                    Button(action: {
+                        toggleFavorite(product)
+                    }) {
+                        Image(systemName: "heart.fill")
+                            .foregroundColor(.red)
+                    }
+                }
+                .background(Color.yellow.opacity(0.2))
+            }
+            .onDelete(perform: deleteProduct(at:))
         }
     }
-
+    
     private var addButton: some View {
         Button(action: {
             isAddingFavorite = true
         }) {
             Image(systemName: "plus")
-                .foregroundColor(.red)
+                .foregroundColor(Color("lightYellow"))
+                .font(.title)
         }
     }
-
+    
     private var addFavoriteSheet: some View {
         ZStack {
-            colorSchemeBackground
+            Color("lightYellow")
                 .ignoresSafeArea()
+            
             VStack {
                 Text("Add Favorite Product")
                     .font(.headline)
@@ -83,7 +92,7 @@ struct FavoritesView: View {
             .padding()
         }
     }
-
+    
     private func toggleFavorite(_ product: String) {
         if favoriteProducts.contains(product) {
             favoriteProducts.remove(product)
@@ -91,14 +100,14 @@ struct FavoritesView: View {
             favoriteProducts.insert(product)
         }
     }
-
+    
     private func deleteProduct(at offsets: IndexSet) {
         for index in offsets {
             let product = Array(favoriteProducts.sorted())[index]
             favoriteProducts.remove(product)
         }
     }
-
+    
     private func addFavorite() {
         if !newFavorite.isEmpty {
             favoriteProducts.insert(newFavorite)
@@ -106,7 +115,7 @@ struct FavoritesView: View {
             isAddingFavorite = false
         }
     }
-
+    
     private var colorSchemeBackground: Color {
         let colorMap: [AppColorScheme: Color] = [
             .lightGreen: Color("lightGreen"),
@@ -117,19 +126,16 @@ struct FavoritesView: View {
     }
 }
 
+
 struct FavoritesView_Previews: PreviewProvider {
     static var previews: some View {
-        let initialFavoriteProducts: Set<String> = ["Strawberry", "Chocolate", "Blueberry"]
-        
+        let initialFavoriteProducts: Set<String> = ["Apple", "Banana", "Orange"]
+
         return FavoritesView(productAmounts: .constant(["Apple": "5", "Banana": "2", "Orange": "6"]),
                              favoriteProducts: .constant(initialFavoriteProducts),
                              selectedColorScheme: .constant(.lightGreen))
     }
 }
-
-
-//Проработать логику приложения, возможно добавить отдельное окно для ввода продуктов в фавориты
-
 
 
 

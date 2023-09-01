@@ -27,6 +27,7 @@ struct ProductListView: View {
             ZStack {
                 colorSchemeBackground
                     .ignoresSafeArea()
+                
                 VStack {
                     Spacer()
                     productsList
@@ -38,11 +39,17 @@ struct ProductListView: View {
                 .sheet(isPresented: $isAddingProduct) {
                     addProductSheet
                 }
-                buttonsStack
+                
+                VStack {
+                    Spacer()
+                    buttonsStack
+                        .padding()
+                        .background(Color.white)
+                }
             }
         }
     }
-    
+
     private var buttonsStack: some View {
         HStack {
             Spacer()
@@ -53,25 +60,23 @@ struct ProductListView: View {
             settingsButton
             Spacer()
         }
-        .padding()
-        .background(Color.white)
     }
-    
+
     private var addButton: some View {
         Button(action: {
             isAddingProduct = true
         }) {
             Image(systemName: "plus")
                 .foregroundColor(textFieldColor)
-                .font(.title)
+                .font(.system(size: 35))
         }
     }
     
     private var favoritesButton: some View {
         NavigationLink(destination: FavoritesView(productAmounts: $productAmounts, favoriteProducts: $favoriteProducts, selectedColorScheme: $selectedColorScheme)) {
-            Image(systemName: "heart.fill")
+            Image(systemName: "heart")
                 .foregroundColor(textFieldColor)
-                .font(.headline)
+                .font(.system(size: 35))
         }
     }
     
@@ -126,13 +131,6 @@ struct ProductListView: View {
         }
     }
     
-    private func moveToFavorites(_ product: String) {
-        if productAmounts[product] != nil {
-            favoriteProducts.insert(product)
-            productAmounts[product] = nil
-        }
-    }
-    
     private func deleteProduct(at offsets: IndexSet) {
         for index in offsets {
             let product = Array(productAmounts.keys.sorted())[index]
@@ -147,7 +145,7 @@ struct ProductListView: View {
         }) {
             Image(systemName: "gearshape.fill")
                 .foregroundColor(Color.init("lightYellow"))
-                .font(.title)
+                .font(.system(size: 35))
         }
         .sheet(isPresented: $isShowingSettings) {
             SettingsView(selectedColorScheme: $selectedColorScheme)
@@ -184,4 +182,4 @@ struct ProductListView_Previews: PreviewProvider {
 }
 
 
-// добавить избранное, часто покупали, картинки с продуктом, возможно вам будет интересно
+
