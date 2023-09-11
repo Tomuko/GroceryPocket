@@ -1,63 +1,63 @@
-//
-//  SettingsView.swift
-//  GroceryPocket
-//
-//  Created by Виктория Страдзина on 10.08.2023.
-//
-
 import SwiftUI
 
 struct SettingsView: View {
     @Binding var selectedColorScheme: AppColorScheme
     @Environment(\.presentationMode) var presentationMode
+    @State private var username: String = ""
+    @State private var email: String = ""
+    @State private var bio: String = ""
     
     var body: some View {
         NavigationView {
-            VStack {
-                Text("Change color")
-                    .font(.largeTitle)
-                    .padding()
-                
-                Spacer()
-                
-                Picker("Color Scheme", selection: $selectedColorScheme) {
-                    ForEach(AppColorScheme.allCases, id: \.self) { scheme in
-                        Text(scheme.rawValue).tag(scheme)
-                    }
+            Form {
+                Section(header: Text("Profile Information")) {
+                    TextField("Username", text: $username)
+                    TextField("Email", text: $email)
+                    TextEditor(text: $bio)
                 }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
                 
-                Spacer()
-                
-                Text("Selected Color: \(selectedColorScheme.rawValue)")
-                    .font(.headline)
-                    .foregroundColor(.gray)
-                    .padding(.bottom)
+                Section(header: Text("App Settings")) {
+                    Picker("Color Scheme", selection: $selectedColorScheme) {
+                        ForEach(AppColorScheme.allCases, id: \.self) { scheme in
+                            Text(scheme.rawValue).tag(scheme)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                }
             }
-            .navigationBarTitle("Settings", displayMode: .inline)
-            .navigationBarItems(trailing: doneButton)
-            .background(colorSchemeBackground)
+            .navigationBarTitle("Profile Settings", displayMode: .inline)
+            .navigationBarItems(trailing: saveButton)
+            .background(ColorSchemeBackground(colorScheme: selectedColorScheme))
         }
     }
     
-    private var doneButton: some View {
-        Button("Done") {
-            presentationMode.wrappedValue.dismiss()
+    private var saveButton: some View {
+        Button("Save") {
+            // Здесь вы можете сохранить изменения в профиле
+            saveProfileChanges()
         }
         .foregroundColor(Color.init("lightYellow"))
         .font(.headline)
         .padding()
     }
     
-    private var colorSchemeBackground: Color {
-        switch selectedColorScheme {
+    private func saveProfileChanges() {
+        // Здесь вы можете выполнить сохранение изменений профиля
+        // Например, отправить данные на сервер или сохранить их локально
+    }
+}
+
+struct ColorSchemeBackground: View {
+    let colorScheme: AppColorScheme
+    
+    var body: some View {
+        switch colorScheme {
         case .lightGreen:
-            return Color.init("lightGreen")
+            return Color.init("lightGreen").ignoresSafeArea()
         case .lightBlue:
-            return Color.init("lightBlue")
+            return Color.init("lightBlue").ignoresSafeArea()
         case .lightPink:
-            return Color.init("lightPink")
+            return Color.init("lightPink").ignoresSafeArea()
         }
     }
 }
@@ -67,10 +67,3 @@ struct SettingsView_Previews: PreviewProvider {
         SettingsView(selectedColorScheme: .constant(.lightGreen))
     }
 }
-
-
-
-
-
-
-

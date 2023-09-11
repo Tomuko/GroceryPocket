@@ -130,7 +130,7 @@ struct FavoritesView: View {
 struct FavoritesView_Previews: PreviewProvider {
     static var previews: some View {
         let initialFavoriteProducts: Set<String> = ["Apple", "Banana", "Orange"]
-
+        
         return FavoritesView(productAmounts: .constant(["Apple": "5", "Banana": "2", "Orange": "6"]),
                              favoriteProducts: .constant(initialFavoriteProducts),
                              selectedColorScheme: .constant(.lightGreen))

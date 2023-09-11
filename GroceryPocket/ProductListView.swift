@@ -17,10 +17,10 @@ struct ProductListView: View {
     @State private var newProduct: String = ""
     @State private var newAmount: String = ""
     @State private var productAmounts: [String: String] = ["Apple": "5", "Banana": "2", "Orange": "6", "Pear": "3", "Grape": "9"]
+    @State private var favoriteProducts: Set<String> = []
     @State private var isAddingProduct = false
     @State private var isShowingSettings = false
     @State private var selectedColorScheme = AppColorScheme.lightGreen
-    @State private var favoriteProducts: Set<String> = []
     
     var body: some View {
         NavigationView {
@@ -49,7 +49,7 @@ struct ProductListView: View {
             }
         }
     }
-
+    
     private var buttonsStack: some View {
         HStack {
             Spacer()
@@ -61,7 +61,7 @@ struct ProductListView: View {
             Spacer()
         }
     }
-
+    
     private var addButton: some View {
         Button(action: {
             isAddingProduct = true
